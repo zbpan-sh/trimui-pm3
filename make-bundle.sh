@@ -10,8 +10,11 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
-PM3_TAG="${PM3_TAG:-v4.23346}"
-NAME="trimui-pm3-$PM3_TAG"
+PM3_TAG="${PM3_TAG:-v4.23346}"          # Iceman tag of the bundled client
+# The bundle is named after THIS project's version, not the Iceman tag it wraps.
+VERSION="${VERSION:-$(git describe --tags --exact-match 2>/dev/null \
+                      || git describe --tags --always 2>/dev/null || echo dev)}"
+NAME="trimui-pm3-$VERSION"
 DIST="$ROOT/dist"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
@@ -60,6 +63,7 @@ tar czf "$OUT" -C "$TMP" "$NAME"
 
 echo
 echo "== bundle: $OUT  ($(du -h "$OUT" | cut -f1))"
+echo "   project version: $VERSION   bundled Iceman client: $PM3_TAG"
 echo
 echo "Give that file to the new user; they run:"
 echo "    tar xzf $NAME.tar.gz && cd $NAME"
