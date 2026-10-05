@@ -32,3 +32,6 @@ app/shots/
 *.bmp
 *~
 dist/
+
+# Local release tooling (gh CLI downloaded by hand)
+.tools/
