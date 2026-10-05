@@ -42,7 +42,15 @@
 #define MAX_FIND      48
 #define RAW_CAP    (192 * 1024)
 
+/* Where the Iceman client is looked for, in order:
+ *   1. $PM3_BIN or --pm3
+ *   2. <app dir>/pm3/proxmark3     -- self-contained copy on the SD card, so the
+ *                                     whole install can be done by copying files
+ *   3. the default below           -- internal storage, where install.sh puts it
+ * The app directory is the one holding this executable, so layout 2 travels with
+ * the app: unplug the card, drop it in another handheld, and it still works. */
 #define DEFAULT_PM3  "/mnt/UDISK/pm3-v423346/proxmark3"
+#define LOCAL_PM3_SUBDIR "pm3/proxmark3"
 #define DEFAULT_PORT "/dev/ttyACM0"
 
 /* ------------------------------------------------------------------- state */
@@ -848,8 +856,16 @@ int main(int argc, char **argv) {
     char adir[512];
     app_dir(adir, sizeof adir);
 
-    snprintf(g.pm3bin, sizeof g.pm3bin, "%s",
-             getenv("PM3_BIN") ? getenv("PM3_BIN") : DEFAULT_PM3);
+    if (getenv("PM3_BIN")) {
+        snprintf(g.pm3bin, sizeof g.pm3bin, "%s", getenv("PM3_BIN"));
+    } else {
+        char local[600];
+        snprintf(local, sizeof local, "%s/%s", adir, LOCAL_PM3_SUBDIR);
+        if (file_exists(local))
+            snprintf(g.pm3bin, sizeof g.pm3bin, "%s", local);
+        else
+            snprintf(g.pm3bin, sizeof g.pm3bin, "%s", DEFAULT_PM3);
+    }
     snprintf(g.port, sizeof g.port, "%s",
              getenv("PM3_PORT") ? getenv("PM3_PORT") : DEFAULT_PORT);
     char fontpath[600];

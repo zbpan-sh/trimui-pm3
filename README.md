@@ -109,6 +109,26 @@ tar xzf trimui-pm3-v4.23346.tar.gz && cd trimui-pm3-v4.23346
 ./install.sh --host <handheld-ip> --restart-ui
 ```
 
+### By copying onto the microSD card (no SSH, no network)
+
+```sh
+./make-sdcard.sh
+```
+
+produces `dist/sdcard/Apps/Proxmark3Tools/`, which is **self-contained**: the
+Iceman client and its dictionaries/lua/scripts travel inside the app folder, and
+the app prefers that copy over anything on internal storage. Copy the `Apps`
+folder onto the card (merging it with the existing one), put the card back, and
+launch `PM3 tools` from the menu. Instructions for the end user are written to
+`dist/sdcard/HOW-TO-INSTALL.txt`.
+
+This route needs no SSH and no network on the handheld, and it survives moving the
+card to another handheld.
+
+> One caveat: the launcher's `Apps/show.json` is its visibility list. MainUI scans
+> the Apps folders itself and rewrites that file, but if `PM3 tools` does not show
+> up, add `{"label":"PM3 tools","show":1}` to the array by hand.
+
 ### From source
 
 ```sh
@@ -157,6 +177,7 @@ cd /mnt/UDISK/pm3-v423346
 ```
 install.sh          one-command install onto a handheld over SSH
 make-bundle.sh      packs sources + built binaries into one distributable tarball
+make-sdcard.sh      builds a folder that is installed by copying it onto the card
 QUICKSTART.md       new-device walkthrough, prerequisites, troubleshooting
 
 device/                talking to and diagnosing the handheld

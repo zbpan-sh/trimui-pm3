@@ -8,7 +8,8 @@ with the results shown on screen, operated with the handheld's A / B / left-righ
 ## Prerequisites
 
 - A TrimUI handheld running the **stock TrimUI OS**, with SDL2 in `/usr/trimui/lib`.
-- The PM3 client installed at `/mnt/UDISK/pm3-v423346/` — see the [root README](../README.md).
+- The PM3 client, either at `/mnt/UDISK/pm3-v423346/` or in `pm3/` next to the app
+  (the card-copy layout) — see the [root README](../README.md) and `make-sdcard.sh`.
 - The app built with `app/build-app.sh`, which produces `app/out/pm3scan`.
 
 For the end-to-end install (client, firmware and app), see [QUICKSTART.md](../QUICKSTART.md).
@@ -153,7 +154,8 @@ The menu entry is labelled `PM3 tools` (from `config.json`). If the app was
 previously installed under an older name, `app/deploy-app.sh` removes the stale
 `Apps/<old-dir>` and the stale `show.json` entry after a verified install.
 
-The client itself is not here; by default it uses `/mnt/UDISK/pm3-v423346/proxmark3`
+The client is resolved in this order: `$PM3_BIN` (or `--pm3`), then
+`<app dir>/pm3/proxmark3`, then `/mnt/UDISK/pm3-v423346/proxmark3`
 (overridable with `--pm3` or `PM3_BIN`).
 
 ---

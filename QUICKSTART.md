@@ -64,6 +64,30 @@ then:
 ./install.sh --host <handheld-ip> --restart-ui
 ```
 
+### No SSH at all: copy the files onto the card
+
+If you would rather not enable SSH, the whole thing can be installed with a card
+reader:
+
+```sh
+./make-sdcard.sh          # on a machine that has the binaries
+```
+
+That writes `dist/sdcard/Apps/Proxmark3Tools/`, containing the app **and** the
+Iceman client with all its dictionaries and scripts. Copy the `Apps` folder onto
+the microSD card, merging it with the one already there, and put the card back in
+the handheld. `dist/sdcard/HOW-TO-INSTALL.txt` repeats this for the end user.
+
+The app looks for its client in this order, so this layout works with no internal
+storage involved:
+
+1. `$PM3_BIN` (or `--pm3`)
+2. `<app dir>/pm3/proxmark3` — the copy on the card
+3. `/mnt/UDISK/pm3-v423346/proxmark3` — where `install.sh` puts it
+
+If `PM3 tools` does not appear in the Apps menu, add
+`{"label":"PM3 tools","show":1}` to the `Apps/show.json` array on the card.
+
 ### From source
 
 One command — it downloads the TrimUI SDK and toolchain, builds the client and
