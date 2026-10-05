@@ -43,8 +43,8 @@ For the end-to-end install (client, firmware and app), see [QUICKSTART.md](../QU
 | **A** (joystick button 1) | Scan the currently highlighted mode |
 | **B** (joystick button 0) | While scanning → cancel; while idle → quit |
 | **Left/Right / Up/Down** (hat 0) | Switch between HF / LF |
-| **X** (button 2) | Rescan the previous mode |
-| **Y** (button 3) | Clear the results area |
+| **X** (button 3) | Rescan the previous mode |
+| **Y** (button 2) | Clear the results area |
 | F12 | Screenshot (when a path is given via `--screenshot`) |
 
 The header also shows a **battery + clock widget** in the top-right, refreshed once
@@ -76,10 +76,22 @@ execute `/tmp/cmd_to_run.sh`, and after the application exits `MainUI` is brough
 So launching the application directly from SSH is **invisible** (it gets covered by MainUI);
 the launch has to go through this handoff procedure, which is exactly what happens when the app is launched from the "Apps" menu.
 
-**The input mapping** uses the raw SDL joystick indices, and the application logs every input event so the
-mapping can be checked against a log. The result is **A = button 1, B = button 0**
-(not SDL's Xbox gamepad mapping, because `SDL_Joystick` raw indices are used),
-and the D-pad goes through hat 0 (up 1 / down 4 / left 8 / right 2).
+**The input mapping** uses the raw SDL joystick indices (`SDL_Joystick`, not the
+game-controller API, so `gamecontrollerdb.txt` does not apply). The application
+logs every input event, and the mapping below was obtained by pressing each button
+and reading that log:
+
+| Physical button | Raw index |
+|---|---|
+| A | 1 |
+| B | 0 |
+| X | 3 |
+| Y | 2 |
+
+Note the reversed pairs: this pad numbers its face buttons the opposite way round
+from the Xbox convention, so **A is 1 and B is 0**, and **X is 3 and Y is 2**.
+Guessing the Xbox order produces buttons that behave as each other's opposite.
+The D-pad arrives as hat 0 (up 1 / down 4 / left 8 / right 2).
 
 ---
 

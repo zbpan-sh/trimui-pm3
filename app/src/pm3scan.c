@@ -807,9 +807,13 @@ static void input_event(const SDL_Event *e) {
             default: break;
         }
     } else if (e->type == SDL_JOYBUTTONDOWN) {
-        /* Raw joystick indices, measured on the Brick Pro: A = 1, B = 0.
-         * (These are raw indices, not SDL game-controller buttons, so the
-         *  gamecontrollerdb mapping does not apply.) */
+        /* Raw joystick indices, measured on the Brick Pro by pressing each
+         * button and reading the log below. This pad numbers its face buttons
+         * the opposite way round from the Xbox convention, so the indices are
+         * NOT A=0, B=1, X=2, Y=3:
+         *     A = 1, B = 0, X = 3, Y = 2
+         * These are raw indices, not SDL game-controller buttons, so the
+         * gamecontrollerdb mapping does not apply either. */
         logf_("input: joy button %d", e->jbutton.button);
         switch (e->jbutton.button) {
             case 1:     /* A -> scan the selected mode */
@@ -827,10 +831,10 @@ static void input_event(const SDL_Event *e) {
                     SDL_PushEvent(&q);
                 }
                 break;
-            case 2:     /* X -> rescan the last mode */
+            case 3:     /* X -> rescan the last mode */
                 scan_start(g.last_mode);
                 break;
-            case 3:     /* Y -> clear the panes */
+            case 2:     /* Y -> clear the panes */
                 g.find.count = 0;
                 g.log.count = 0;
                 g.state = ST_IDLE;
