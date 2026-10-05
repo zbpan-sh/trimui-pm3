@@ -9,6 +9,11 @@ firmware on the handheld.
 **Everything runs on the stock TrimUI OS.** The only thing that gets flashed is
 the Proxmark3 itself, and only so that its firmware matches the client.
 
+![A TrimUI Brick Pro running PM3 tools with a Proxmark3 and its 125 kHz LF antenna](docs/images/hardware-setup.jpg)
+
+*A TrimUI Brick Pro running **PM3 tools**, next to a Proxmark3 with its LF antenna
+and test cards. Photo of the verified setup.*
+
 ---
 
 ## Verified hardware
