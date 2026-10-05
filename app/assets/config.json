@@ -1,0 +1,8 @@
+{
+"package":"com.trimui.pm3scan",
+"label":"PM3 tools",
+"icon":"icon.png",
+"iconsel":"icon.png",
+"launch":"launch.sh",
+"description":"Proxmark3 HF/LF card scanner"
+}

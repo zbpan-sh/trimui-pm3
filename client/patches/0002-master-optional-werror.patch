@@ -1,0 +1,18 @@
+diff --git a/Makefile.defs b/Makefile.defs
+index 7304bb5..c96342a 100644
+--- a/Makefile.defs
++++ b/Makefile.defs
+@@ -131,8 +131,11 @@ ifeq ($(DEBUG),1)
+   DEFCFLAGS = -ggdb3 -O0 -fstrict-aliasing -pipe
+   DEFLDFLAGS =
+ else
+-  DEFCXXFLAGS = -Wall -Werror -O3 -pipe
+-  DEFCFLAGS = -Wall -Werror -O3 -fstrict-aliasing -pipe
++  # WERRORFLAG is -Werror by default; a cross build with an older compiler can
++  # pass "-Werror -Wno-error=<class>" to demote only that compiler's false positives.
++  WERRORFLAG ?= -Werror
++  DEFCXXFLAGS = -Wall $(WERRORFLAG) -O3 -pipe
++  DEFCFLAGS = -Wall $(WERRORFLAG) -O3 -fstrict-aliasing -pipe
+   DEFLDFLAGS =
+ endif
+ 

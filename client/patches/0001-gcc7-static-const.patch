@@ -1,0 +1,30 @@
+diff --git a/client/src/cmdhfaliro.c b/client/src/cmdhfaliro.c
+index b3a1c19..0a9e535 100644
+--- a/client/src/cmdhfaliro.c
++++ b/client/src/cmdhfaliro.c
+@@ -56,7 +56,9 @@ static const uint8_t ALIRO_DEVICE_CONTEXT[] = {0x4E, 0x88, 0x7B, 0x4C};
+ static const uint8_t ALIRO_AUTH0_GCM_IV[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+ static const uint8_t ALIRO_SECURE_CHANNEL_READER_MODE[] = {0, 0, 0, 0, 0, 0, 0, 0};
+ static const uint8_t ALIRO_SECURE_CHANNEL_DEVICE_MODE[] = {0, 0, 0, 0, 0, 0, 0, 1};
+-static const uint8_t ALIRO_NFC_INTERFACE_BYTE = 0x5E;
++// macro, not a static const: used in a static initializer, which requires a
++// constant expression (GCC < 8 does not fold static const scalars)
++#define ALIRO_NFC_INTERFACE_BYTE 0x5E
+ static const uint8_t ALIRO_AUTH0_DEFAULT_POLICY = 0x01;
+ static const uint8_t ALIRO_AUTH1_REQUEST_PUBLIC_KEY = 0x01;
+ static const uint8_t ALIRO_EXCHANGE_INS = 0xC9;
+diff --git a/client/src/cmdhfvas.c b/client/src/cmdhfvas.c
+index 385ba18..31fd5cb 100644
+--- a/client/src/cmdhfvas.c
++++ b/client/src/cmdhfvas.c
+@@ -124,7 +124,9 @@ static bool VASWalletTypeIsApplePay(const uint8_t *walletType, size_t walletType
+            && memcmp(walletType, applePayWalletType, sizeof(applePayWalletType) - 1) == 0;
+ }
+ 
+-static const uint16_t VAS_STATUS_NOT_AVAILABLE = 0xFFFF;
++// macro, not a static const: used as a case label, which requires an
++// integer constant expression (GCC < 8 does not fold static const scalars)
++#define VAS_STATUS_NOT_AVAILABLE 0xFFFF
+ 
+ static void PrintVASFeatureBit(const char *bits, uint8_t mask, uint8_t bit, const char *enabled, const char *disabled) {
+     const bool is_enabled = (mask & (1U << bit)) != 0;
