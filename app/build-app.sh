@@ -36,9 +36,20 @@ mkdir -p "$EXTRA/lib" "$OUT"
 
 # Curated SDL2 link-time symlinks (same trick as the client build: never expose
 # the SDK's glibc components, which are glibc 2.23 and would clash with 2.25).
+# Link a library from the SDK sysroot into extra/lib using a RELATIVE symlink,
+# so the whole tree can be moved or cloned anywhere. Absolute links here break
+# silently after a move: the compiler just reports "cannot find -lz".
+link_sysroot_lib() {
+    local l="$1" src="$SDK/usr/lib/$l" dst="$EXTRA/lib/$l"
+    [ -e "$src" ] || return 0
+    ln -sfn "$(realpath --relative-to="$EXTRA/lib" "$src")" "$dst"
+}
+
+# SDL2 and its link-time deps; zlib/bzip2 are freetype's. All must be present or
+# the link fails with a bare "cannot find -lz".
 for l in libSDL2.so libSDL2-2.0.so.0 libSDL2_ttf.so libSDL2_ttf-2.0.so.0 \
-         libfreetype.so libfreetype.so.6; do
-    [ -e "$SDK/usr/lib/$l" ] && ln -sf "$SDK/usr/lib/$l" "$EXTRA/lib/$l"
+         libfreetype.so libfreetype.so.6 libz.so libbz2.so; do
+    link_sysroot_lib "$l"
 done
 
 # The wrapper already adds: -I extra/include -idirafter SDK/usr/include

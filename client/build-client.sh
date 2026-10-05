@@ -64,9 +64,16 @@ for h in lz4.h lz4frame.h lz4hc.h; do
     ln -sf "$LZ4SRC/lib/$h" "$EXTRA/include/$h"
 done
 # Only the libs we actually need from the SDK -- NOT its glibc components.
-for l in libz.so libbz2.so; do
-    ln -sf "$SDK/usr/lib/$l" "$EXTRA/lib/$l"
-done
+# Link a library from the SDK sysroot into extra/lib using a RELATIVE symlink,
+# so the whole tree can be moved or cloned anywhere. Absolute links here break
+# silently after a move: the compiler just reports "cannot find -lz".
+link_sysroot_lib() {
+    local l="$1" src="$SDK/usr/lib/$l" dst="$EXTRA/lib/$l"
+    [ -e "$src" ] || return 0
+    ln -sfn "$(realpath --relative-to="$EXTRA/lib" "$src")" "$dst"
+}
+
+for l in libz.so libbz2.so; do link_sysroot_lib "$l"; done
 echo "== curated extra libs:"; ls -l "$EXTRA/lib" | tail -n +2 | awk '{print "   "$9" -> "$11}'
 
 # ------------------------------------------------------------------- 3. linenoise
