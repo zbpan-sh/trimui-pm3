@@ -75,6 +75,23 @@ No SSH, no network and no compiler are needed.
 5. "PM3 tools" should be in the Apps menu. If it is not listed, see the note
    below, then reboot.
 
+IMPORTANT -- eject before you unplug
+------------------------------------
+The handheld presents its card over USB with a write cache, and it does not flush
+that cache if the cable is pulled while the card is still mounted. Doing so can
+corrupt the folder you just copied: "PM3 tools" then disappears from the Apps
+menu while every other app keeps working, and the card needs fsck.vfat to repair.
+
+So always unmount/eject first -- the eject or "safely remove" button in your file
+manager, or:
+
+    udisksctl unmount -b /dev/sdX          # replace sdX with the card's device
+    udisksctl power-off -b /dev/sdX        # optional: also flushes the device cache
+
+and confirm it is gone (the card disappears from the file manager, or
+`findmnt /dev/sdX1` prints nothing) before touching the cable or the card.
+A card reader avoids this hazard entirely.
+
 Plug the Proxmark3 into the TOP USB-C port before scanning.
 Scanning also needs the Proxmark3 to run firmware from the same Iceman release
 as the client (v4.23346 here) -- see docs/FIRMWARE.md.
