@@ -110,9 +110,13 @@ Full walkthrough and troubleshooting: **[QUICKSTART.md](QUICKSTART.md)**.
 ### From a bundle (no compiler, no large download)
 
 ```sh
-tar xzf trimui-pm3-v4.23346.tar.gz && cd trimui-pm3-v4.23346
+tar xzf trimui-pm3-<version>.tar.gz && cd trimui-pm3-<version>
 ./install.sh --host <handheld-ip> --restart-ui
 ```
+
+`make-bundle.sh` names the tarball after the project's git tag (`v0.0.1`, or
+`v0.0.1-2-g2fd7eb5` for a build after that tag), not after the Iceman tag it
+wraps.
 
 ### By copying onto the microSD card (no SSH, no network)
 
@@ -128,7 +132,9 @@ launch `PM3 tools` from the menu. Instructions for the end user are written to
 `dist/sdcard/HOW-TO-INSTALL.txt`.
 
 This route needs no SSH and no network on the handheld, and it survives moving the
-card to another handheld.
+card to another handheld. It is documented in full — tree layout, why vfat needs
+no permission handling, client precedence, release zip — in
+[docs/SDCARD-DEPLOY.md](docs/SDCARD-DEPLOY.md).
 
 > One caveat: the launcher's `Apps/show.json` is its visibility list. MainUI scans
 > the Apps folders itself and rewrites that file, but if `PM3 tools` does not show
@@ -207,6 +213,7 @@ docs/
   DEVICE-NOTES.md     kernel/USB/launcher evidence for the verified device
   FIRMWARE.md         building and flashing matching Proxmark3 firmware
   GUI-APP.md          app design, icon format, headless verification
+  SDCARD-DEPLOY.md    packaging and deploying by copying onto the microSD card
   evidence/           raw device report collected on the verified unit
 ```
 

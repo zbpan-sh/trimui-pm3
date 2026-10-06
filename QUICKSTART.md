@@ -88,6 +88,10 @@ storage involved:
 If `PM3 tools` does not appear in the Apps menu, add
 `{"label":"PM3 tools","show":1}` to the `Apps/show.json` array on the card.
 
+Packaging details for this route — what the tree contains, why the vfat card
+needs no `chmod`, and how the app finds the client on the card — are in
+[docs/SDCARD-DEPLOY.md](docs/SDCARD-DEPLOY.md).
+
 ### From source
 
 One command — it downloads the TrimUI SDK and toolchain, builds the client and
